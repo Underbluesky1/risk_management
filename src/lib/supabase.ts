@@ -10,6 +10,12 @@ export function createAdminSupabaseClient() {
 	if (!supabaseUrl || !serviceRoleKey) {
 		throw new Error("Supabase server configuration is missing.");
 	}
+	if (serviceRoleKey === supabaseAnonKey) {
+		throw new Error("SUPABASE_SERVICE_ROLE_KEY is using the anon key. Copy the service_role key from Supabase Project Settings > API.");
+	}
+	if (serviceRoleKey.startsWith("sb_publishable_")) {
+		throw new Error("SUPABASE_SERVICE_ROLE_KEY is using a publishable key. Use the Supabase secret/service_role key instead.");
+	}
 
 	return createClient(supabaseUrl, serviceRoleKey, {
 		auth: { autoRefreshToken: false, persistSession: false },

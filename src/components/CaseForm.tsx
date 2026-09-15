@@ -19,7 +19,7 @@ export function CaseForm({ initialCase }: CaseFormProps) {
     setCaseRecord((current) => ({ ...current, [field]: value }));
   }
 
-  function handleSave(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
 
@@ -36,8 +36,8 @@ export function CaseForm({ initialCase }: CaseFormProps) {
         body: JSON.stringify(caseRecord),
       });
       if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.error ?? "Case could not be saved.");
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error ?? `Case could not be saved (HTTP ${response.status}).`);
       }
       router.replace("/dashboard");
       router.refresh();
