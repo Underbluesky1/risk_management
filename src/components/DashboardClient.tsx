@@ -63,13 +63,18 @@ export function DashboardClient() {
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><p className="text-sm text-slate-500">Closed or archived</p><p className="mt-2 text-3xl font-semibold text-slate-900">{caseRecords.length - activeCases.length}</p></div>
       </div>
 
-      {!isLoading && displayedCases.length > 0 ? <CaseTable cases={displayedCases} onClose={closeCase} onDelete={deleteCase} /> : null}
-      {!isLoading && displayedCases.length === 0 ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
-          <p className="font-medium text-slate-900">No cases to display</p>
-          <p className="mt-1 text-sm text-slate-500">Create a new case or show closed and archived cases.</p>
+      <div className="mt-6">
+        <div>
+          {!isLoading && displayedCases.length > 0 ? <CaseTable cases={displayedCases} onClose={closeCase} onDelete={deleteCase} /> : null}
+          {!isLoading && displayedCases.length === 0 ? (
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
+              <p className="font-medium text-slate-900">No cases to display</p>
+              <p className="mt-1 text-sm text-slate-500">Create a new case or show closed and archived cases.</p>
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
+
     </section>
   );
 }

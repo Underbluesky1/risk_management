@@ -92,7 +92,7 @@ export function LoginForm() {
             {isLoading ? "Signing in..." : "Login"}
           </button>
 
-          <p className="text-center text-xs text-slate-500">Single-user access</p>
+          <p className="text-center text-xs text-slate-500">Use the configured sign-in credentials from .env.local.</p>
         </form>
       </div>
     </div>

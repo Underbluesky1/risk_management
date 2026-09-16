@@ -11,4 +11,6 @@ export interface CaseRecord {
   created_at: string;
   updated_at: string;
   closed_at: string | null;
+  category?: string;
+  assigned_doctor?: string;
 }
