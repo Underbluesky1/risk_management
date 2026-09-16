@@ -9,6 +9,19 @@ async function getId(context: { params: Promise<{ id: string }> }) {
   return (await context.params).id;
 }
 
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+  if (!isAuthenticated(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const id = await getId(context);
+    const { data, error } = await createAdminSupabaseClient().from("cases").select("*").eq("id", id).single();
+    if (error) throw error;
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to load case." }, { status: 500 });
+  }
+}
+
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!isAuthenticated(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

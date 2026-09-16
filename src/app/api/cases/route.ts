@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   if (!isAuthenticated(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const { data, error } = await createAdminSupabaseClient().from("cases").select("*").order("created_at", { ascending: false });
+    const { data, error } = await createAdminSupabaseClient().from("cases").select("*").order("created_at", { ascending: false }).limit(10);
     if (error) throw error;
     return NextResponse.json(data);
   } catch (error) {
@@ -26,7 +26,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Case reference and notes are required." }, { status: 400 });
     }
 
-    const { data, error } = await createAdminSupabaseClient().from("cases").insert({
+    const adminClient = createAdminSupabaseClient();
+    const { count, error: countError } = await adminClient.from("cases").select("id", { count: "exact", head: true });
+    if (countError) throw countError;
+    if ((count ?? 0) >= 10) {
+      return NextResponse.json({ error: "The case limit is 10 records. Delete an old case before creating a new one." }, { status: 409 });
+    }
+
+    const { data, error } = await adminClient.from("cases").insert({
       case_reference: body.case_reference.trim(),
       priority: body.priority,
       status: body.status,
