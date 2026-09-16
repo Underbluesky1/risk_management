@@ -37,21 +37,21 @@ export function DashboardClient() {
   }
 
   const activeCases = caseRecords.filter((item) => item.status !== "Closed" && item.status !== "Archived");
-  const followUpDue = activeCases.filter((item) => item.status === "Follow-up Due").length;
+  const followUpDue = activeCases.filter((item) => item.status === "Follow-up Due" || item.follow_up_date !== null).length;
   const displayedCases = showInactive ? caseRecords : activeCases;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-slate-500">Small, focused case queue</p>
           <h2 className="mt-1 text-2xl font-semibold text-slate-900">Active cases</h2>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <button type="button" onClick={() => setShowInactive((current) => !current)} className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700">
+        <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap sm:gap-3">
+          <button type="button" onClick={() => setShowInactive((current) => !current)} className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 sm:w-auto">
             {showInactive ? "Show active only" : "Show closed/archived"}
           </button>
-          <Link href="/cases/new" className="rounded-xl bg-slate-900 px-4 py-3 text-sm font-medium text-white">+ Create case</Link>
+          <Link href="/cases/new" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white sm:w-auto">+ Create case</Link>
         </div>
       </div>
 

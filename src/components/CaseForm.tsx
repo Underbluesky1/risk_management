@@ -48,7 +48,7 @@ export function CaseForm({ initialCase }: CaseFormProps) {
   }
 
   return (
-    <form onSubmit={handleSave} className="mx-auto max-w-4xl space-y-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <form onSubmit={handleSave} className="mx-auto max-w-4xl space-y-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6">
       <div className="grid gap-5 md:grid-cols-2">
         <div className="md:col-span-2">
           <label className="mb-2 block text-sm font-medium text-slate-700">Case reference</label>
