@@ -11,7 +11,9 @@ export async function GET(request: Request) {
   try {
     const { data, error } = await createAdminSupabaseClient().from("cases").select("*").order("created_at", { ascending: false }).limit(10);
     if (error) throw error;
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "private, no-store, max-age=0" },
+    });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to load cases." }, { status: 500 });
   }

@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { cases as defaultCases } from "@/lib/cases";
 import type { CaseRecord } from "@/types/database";
 import { CaseTable } from "./CaseTable";
 
 export function DashboardClient() {
-  const [caseRecords, setCaseRecords] = useState<CaseRecord[]>(defaultCases);
+  const [caseRecords, setCaseRecords] = useState<CaseRecord[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
 
   useEffect(() => {
-    fetch("/api/cases")
+    fetch("/api/cases", { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error((await response.json()).error ?? "Unable to load cases.");
         return response.json() as Promise<CaseRecord[]>;
